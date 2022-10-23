@@ -339,7 +339,7 @@ fn setup_workers(tofind: &ToFind, args: &Args) -> Workers {
                                 // Not exact match
                                 for sub in clear.windows(tofind_thread.value.len()) {
                                     found = find(&tofind_thread, sub);
-                                    if !found { continue; }
+                                    if found { break; }
                                 }
                             }
 
