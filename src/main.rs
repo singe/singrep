@@ -150,7 +150,9 @@ fn parse_tofind(tofind: &str) -> Result<ToFind, Box<dyn Error>> {
     let mut second = [false; 256];
 
     start[value[0] as usize] = true;
-    second[value[1] as usize] = true;
+    if value.len() > 1 {
+        second[value[1] as usize] = true;
+    }
 
     Ok(ToFind {
         value,
@@ -256,7 +258,10 @@ fn find(tofind: &ToFind, clear: &[u8]) -> bool {
 
     // for small hashlists, can we get away with this cheaper check
     if !tofind.start[clear[0] as usize]
-        || !tofind.second[clear[1] as usize]
+    {
+        return false;
+    }
+    if clear.len() > 1 && !tofind.second[clear[1] as usize]
     {
         return false;
     }
