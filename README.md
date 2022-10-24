@@ -5,6 +5,29 @@ singrep makes use of deterministic kernel file cache'ing to read the file fast e
 
 This only works on Linux and macOS.
 
+# Install to bin
+```commandline
+make install
+
+# or 
+
+CARGO_NET_GIT_FETCH_WITH_CLI=true cargo install --path .
+```
+
+# Install depedencies
+```commandline
+make install_dev
+```
+
+# Build binary
+```commandline
+make build
+
+# or 
+
+CARGO_NET_GIT_FETCH_WITH_CLI=true cargo build
+```
+
 # Usage
 
 `singrep <pattern> <file>`
