@@ -5,7 +5,10 @@ singrep makes use of deterministic kernel file cache'ing to read the file fast e
 
 This only works on Linux and macOS.
 
-# Install to bin
+# Installation
+## Install to your cargo bin 
+Command installs binary to /Users/<user>/.cargo/bin/singrep
+As long as you have done the following: `source $HOME/.cargo/env`
 ```commandline
 make install
 
@@ -14,12 +17,13 @@ make install
 CARGO_NET_GIT_FETCH_WITH_CLI=true cargo install --path .
 ```
 
-# Install depedencies
+## Install development depedencies
 ```commandline
 make install_dev
 ```
-
 # Build binary
+
+## Build binary
 ```commandline
 make build
 
