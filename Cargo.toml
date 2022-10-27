@@ -1,6 +1,6 @@
 [package]
 name = "singrep"
-author = "singe"
+authors = ["singe"]
 version = "0.1.0"
 edition = "2021"
 description = "Fast grep using single-file parallelism"
