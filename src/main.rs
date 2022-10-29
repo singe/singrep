@@ -13,6 +13,7 @@ use std::path::PathBuf;
 use std::thread;
 use std::thread::JoinHandle;
 use std::time::Instant;
+use regex::bytes::Regex;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -32,6 +33,10 @@ struct Args {
     /// Find only the first match
     #[arg(short, long)]
     first: bool,
+
+    /// Search for a regex string, not fixed bytes
+    #[arg(short, long)]
+    regex: bool,
 
     /// Display verbose output
     #[arg(short, long)]
@@ -281,6 +286,8 @@ fn setup_workers(tofind: &ToFind, args: &Args) -> Workers {
     let mut threadhand: Vec<JoinHandle<_>> = Vec::new();
     let updatethresh = 1; // how often to update the main thread
 
+    let re = Regex::new(&args.tofind).unwrap();
+
     // We clone the reciever multiple times which is how the threads pick up new clears
     // Can't do that with mpsc which only allows cloning the sender, need crossbeam
     let (tx, rx): (
@@ -300,6 +307,8 @@ fn setup_workers(tofind: &ToFind, args: &Args) -> Workers {
         let tofind_thread = tofind.clone();
         let args_exact = args.exact;
         let args_position = args.position;
+        let args_regex = args.regex;
+        let re_thread = re.clone();
         //let to_find_thread = hashes.hashlist.clone();
         threadhand.push(thread::spawn(move || {
             // The in-thread worker code /*{{{*/
@@ -337,14 +346,18 @@ fn setup_workers(tofind: &ToFind, args: &Args) -> Workers {
                                 continue;
                             }
 
-                            if args_exact {
-                                found = find(&tofind_thread, clear);
-                                if !found { continue; }
-                            } else {
-                                // Not exact match
-                                for sub in clear.windows(tofind_thread.value.len()) {
-                                    found = find(&tofind_thread, sub);
-                                    if found { break; }
+                            if args_regex {
+                                found = re_thread.is_match(clear);
+                            } else { //regexp
+                                if args_exact {
+                                    found = find(&tofind_thread, clear);
+                                    if !found { continue; }
+                                } else {
+                                    // Not exact match
+                                    for sub in clear.windows(tofind_thread.value.len()) {
+                                        found = find(&tofind_thread, sub);
+                                        if found { break; }
+                                    }
                                 }
                             }
 

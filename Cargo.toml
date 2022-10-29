@@ -1,6 +1,6 @@
 [package]
 name = "singrep"
-author = "singe"
+authors = ["singe"]
 version = "0.1.0"
 edition = "2021"
 description = "Fast grep using single-file parallelism"
@@ -16,3 +16,4 @@ num_cpus = "1.13"
 libc = "0.2"
 page_size = "0.4"
 clap = { version = "4.0.18", features = ["derive"] }
+regex = "1.6.0"

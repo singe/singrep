@@ -5,6 +5,16 @@ singrep makes use of deterministic kernel file cache'ing to read the file fast e
 
 This only works on Linux and macOS.
 
+# Compiling
+
+You'll need a rust install, the easiet way is to use [rustup](https://rustup.rs).
+
+In the cloned repository run:
+
+`cargo build --release`
+
+The resulting binary will be in `target/releases/singrep`.
+
 # Usage
 
 `singrep <pattern> <file>`
@@ -13,8 +23,9 @@ Will search for occurances of *pattern* in the supplied *file*.
 
 # Advanced usage
 
-* Exact Match --exact, -e - will only match lines that entirely match the pattern
-* First Match --first, -f - will exit after the first match is found
+* Regex Match --regex, -r - will match using a regular expression
+* Exact Match --exact, -e - will only match lines that entirely match the pattern, incompatible with regex
+* First Match --first, -f - will exit after the first match is found, incompatible with regex
 * Byte Position --position, -p - will display the *byte (not line) number* where the pattern was found
 * Verbose --verbose, -v - will display some extra information
 
